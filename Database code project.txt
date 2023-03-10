@@ -1,0 +1,318 @@
+create table Passenger(
+Passenger_id number(20) primary key,
+Passenger_name varchar2(30),
+Passenger_phone number(30),
+Passenger_gender varchar2 (20)
+);
+
+create table Passenger_address(
+Passenger_id number(20) primary key,
+city varchar2(20),
+street varchar2(20)
+);
+
+create table Train(
+Train_id number(20)primary key,
+Train_number number(20),
+arrival_city varchar2(30),
+work_time varchar2(30)
+);
+
+create table Ticket(
+Ticket_id number(20) primary key,
+Train_id number(20) not null,    
+Passenger_id number(20) not null,
+journey_date date,
+departure_time varchar2(30),
+arrival_time varchar2(30),
+seat_reserve varchar2(20)
+);
+
+create table Ticket_price(
+Ticket_id number(20) primary key,
+Price number(30) 
+);
+
+create table Station(
+Station_id number(20) primary key,
+Station_name varchar2(30),
+Station_location varchar2(30)
+);
+
+create table Train_schedule(
+Station_id number(20) ,
+Train_id number(20) ,
+arrival_time varchar2(30),
+departure_time varchar2(30),
+CONSTRAINT Train_sch_pk primary key (Station_id,Train_id)
+);
+
+create table Employee(
+Employee_id number(20) primary key,
+Station_id number(20)not null,
+Employee_phone number(30),
+Employee_name varchar2(30),
+Birth_Date date,
+Employee_position varchar2(35),
+Employee_salary number (30)
+);
+
+create table Employee_address(
+Employee_id number(20) primary key,
+city varchar2(20),
+street varchar2(20)
+);
+
+
+--------------------------------------------------------------------------------------------------
+alter table Train_schedule add Foreign key (Station_id) References Station(Station_id);
+alter table Train_schedule add Foreign key (Train_id) References Train(Train_id);
+
+alter table Ticket add Foreign key (Train_id) References Train(Train_id);
+alter table Ticket add Foreign key (Passenger_id) References Passenger(Passenger_id);
+
+alter table Ticket_price add Foreign key (Ticket_id) References Ticket(Ticket_id);
+
+alter table Passenger_address add Foreign key (Passenger_id) References Passenger(Passenger_id);
+
+alter table Employee add Foreign key (Station_id) References Station(Station_id);
+alter table Employee_address add Foreign  key (Employee_id) References Employee(Employee_id);
+
+--------------------------------------------------------------------------------------------------------------
+
+
+insert into Train values(110,20,'Almedina','8:00');
+insert into Train values(111,1,'Jeddah','8:00');
+insert into Train values(112,7,'Makkah','8:00');
+insert into Train values(113,12,'Riyadh','8:30');
+insert into Train values(114,2,'Almedina','8:35');
+insert into Train values(115,11,'Riyadh','8:40');
+insert into Train values(116,3,'Makkah','9:00');
+insert into Train values(117,8,'Khabar','9:30');
+
+insert into Passenger values(2110618,'Khalid Ahmad',0566696265,'Male');
+insert into Passenger values(1987600,'Mohammed Ali',0578944200,'Male');
+insert into Passenger values(1344288,'Ruba Khalid',0544300199,'Female');
+insert into Passenger values(2119080,'Arjwan Alharbi',0559080700,'Female');
+insert into Passenger values(1877632,'Taif Saleh',0588651100,'Female');
+insert into Passenger values(2990540,'Raghad alamri',0511908399,'Female');
+insert into Passenger values(2223400,'Omar Omran',0567898331,'Male');
+insert into Passenger values(2113040,'Fahad Mansor',0549408832,'Male');
+
+insert into Passenger_address values(2110618,'Jeddah', 'Hira ');
+insert into Passenger_address values(1987600,'Jeddah', 'Quraish ' );
+insert into Passenger_address values(1344288,'Riyadh', 'Tahlia ');
+insert into Passenger_address values(2119080,'Riyadh', 'Tahlia ');
+insert into Passenger_address values(1877632,'Makkah ', 'Ajyad ');
+insert into Passenger_address values(2990540,'Khabar ', 'king Abdul Aziz');
+insert into Passenger_address values(2223400,'Almedina' , 'Ajyad');
+insert into Passenger_address values(2113040,'Almedina' , 'Prince Majed ');
+
+insert into TICKET values(1003824461,110,2110618,to_date('05-03-2023', 'mm/dd/yyyy'),'10:00','1:00','A01');
+insert into TICKET values(1013641165,111,1987600,to_date('05-01-2023', 'mm/dd/yyyy'),'10:00','1:00','A02');
+insert into TICKET values(1023472051,112,1344288,to_date('10-03-2023', 'mm/dd/yyyy'),'1:00','3:00','B10');
+insert into TICKET values(1032586972,113,2113040,to_date('08-08-2023', 'mm/dd/yyyy'),'13:20','15:20','B17');
+insert into TICKET values(1049283664,114,2223400,to_date('04-02-2023', 'mm/dd/yyyy'),'18:35','21:35','A21');
+insert into TICKET values(1058152379,115,1877632,to_date('04-20-2023', 'mm/dd/yyyy'),'4:00','6:20','C01');
+insert into TICKET values(1061568293,116,2990540,to_date('11-17-2023', 'mm/dd/yyyy'),'7:40','10:00','C03');
+insert into TICKET values(1075250413,117,2119080,to_date('12-10-2023', 'mm/dd/yyyy'),'20:15','22:50','D09');
+
+insert into TICKET_PRICE values(1003824461,100);
+insert into TICKET_PRICE values(1013641165,100);
+insert into TICKET_PRICE values(1023472051,80);
+insert into TICKET_PRICE values(1032586972,100);
+insert into TICKET_PRICE values(1049283664,80);
+insert into TICKET_PRICE values(1058152379,110);
+insert into TICKET_PRICE values(1061568293,90);
+insert into TICKET_PRICE values(1075250413,200);
+
+insert into Station values(11,'Riyadh train','Aldammam');
+insert into Station values(22,'Riyadh train','Alkhobar');
+insert into Station values(33,'Riyadh train','Riyadh');
+insert into Station values(44,'Alharameen train','Almedina');
+insert into Station values(55,'Alharameen train','Makkah');
+insert into Station values(66,'Alharameen train','Jeddah');
+insert into Station values(77,'SAR train','Alqaseem');
+insert into Station values(88,'SAR train','Hail');
+
+insert into Train_schedule values(11,110,'10:00','1:00');
+insert into Train_schedule values(22,111,'10:00','1:00');
+insert into Train_schedule values(33,112,'1:00','3:00');
+insert into Train_schedule values(44,113,'13:20','15:20');
+insert into Train_schedule values(55,114,'18:35','21:35');
+insert into Train_schedule values(66,115,'4:00','6:20');
+insert into Train_schedule values(77,116,'7:40','10:00');
+insert into Train_schedule values(88,116,'20:15','22:50');
+
+insert into Employee values(11101,11,0505250413,'Saleh Ali',to_date('2-1-1990', 'mm/dd/yyyy'),'Information office employee',8000);
+insert into Employee values(11102,22,0509871325,'Ali Ahmad',to_date('9-14-1997', 'mm/dd/yyyy'),'Reservation office employee',9000);
+insert into Employee values(11103,33,0507725431,'Sami Omar',to_date('10-5-1997', 'mm/dd/yyyy'),'Lost and Found office',5000);
+insert into Employee values(11104,44,0501234151,'Khaled Mohammed',to_date('1-10-2000', 'mm/dd/yyyy'),'Special needs service',10000);
+insert into Employee values(11105,55,0505619980,'Waleed Ahmad',to_date('3-20-1995', 'mm/dd/yyyy'),'E-ticket vending machines employee',5500);
+insert into Employee values(11106,66,0505511289,'Salem Saleh',to_date('11-2-1999', 'mm/dd/yyyy'),'Reservation officer',4500);
+insert into Employee values(11107,77,0509876532,'Mohammed Hani',to_date('12-3-2000', 'mm/dd/yyyy'),'Lost and Found office employee',6000);
+insert into Employee values(11108,88,0504511278,'Yousef Waleed',to_date('11-25-1998', 'mm/dd/yyyy'),'Car parking service',2000);
+
+insert into Employee_address values(11101,'Aldammam','king fahd ');
+insert into Employee_address values(11102,'Makkah','al-husainiah ');
+insert into Employee_address values(11103,'Jeddah','al-madinah ');
+insert into Employee_address values(11104,'Hail','king abdullah  ');
+insert into Employee_address values(11105,'Alkhobar','king khalid');
+insert into Employee_address values(11106,'Alqaseem','sari ');
+insert into Employee_address values(11107,'Riyadh','king abdullah ');
+insert into Employee_address values(11108,'Almedina','4th ring ');
+
+
+----------------------------------------------------------------------------------------
+
+--where
+select Employee_name as Name, Employee_salary as Salary, Employee_position as Position
+from Employee 
+where Employee_salary between 1000 and 5000;
+
+select departure_time as DepartureTime, arrival_time as ArrivalTime
+from Ticket
+where departure_time in ('10:00') or arrival_time in ('6:30');
+
+
+--aggregate
+select min(Price) as LowestPrice,
+max(Price) as HighestPrice,
+sum(Price) as SumPrice,  
+avg(Price) as AVGPrice  
+from TICKET_PRICE
+
+select count(Passenger_gender) as Gender
+from Passenger
+where Passenger_gender = 'Female'
+
+select Ticket_id,count(seat_reserve) as Seat
+from Ticket
+where seat_reserve like 'A%' or seat_reserve like 'B%'
+group by Ticket_id; 
+
+--order by
+select Passenger_id, Passenger_name, Passenger_gender
+from Passenger
+order by Passenger_name;
+
+--group by 
+select count(Employee_id) as EmployeeID, Employee_salary as Salary
+from Employee 
+group by Employee_salary
+order by count(Employee_id);
+
+--subquery
+select Passenger_name as Name
+from Passenger
+where Passenger_id in (select distinct Passenger_id from Ticket);
+
+--join query 
+---equi join
+select Passenger.Passenger_id as PID, Passenger_name as Name, Ticket_id as TID
+from Passenger, Ticket
+where Passenger.Passenger_id = Ticket.Passenger_id 
+order by Ticket_id;
+
+---outer join 
+----full outer join
+select Train.Train_number as TrainNumber, Ticket.journey_date as JourneyDate 
+from Train
+full outer join Ticket on Train.Train_id = Ticket.Train_id 
+order by Train_number;
+
+----left outer join 
+select Passenger.Passenger_id as PassengerID, Ticket.seat_reserve as Seat
+from Passenger 
+left outer join Ticket on Passenger.Passenger_id = Ticket.Passenger_id
+order by Passenger.Passenger_id;
+
+----right outer join 
+select Station.Station_id as StationID, Station.Station_name as StationName, Employee.Employee_id
+from Station
+right outer join Employee on Station.Station_id = Employee.Station_id
+order by Station.Station_id;
+
+------------------------------------------------------------------------------------------------------
+--stored procedures 
+
+--1
+CREATE OR REPLACE PROCEDURE employee_queuer(p_emid employee.employee_id%TYPE)
+AS
+    v_phone        employee.employee_phone%TYPE;
+    v_name         employee.employee_name%TYPE;
+    v_pos          employee.employee_position%TYPE;
+    v_salary       employee.employee_salary%TYPE;
+BEGIN
+    SELECT employee_phone,employee_name,employee_position,employee_salary
+        INTO v_phone,v_name,v_pos,v_salary
+        FROM employee WHERE employee_id=p_emid;
+    DBMS_OUTPUT.PUT_LINE('**OUR EMPLOYEE IN TRAIN STATION**');
+    DBMS_OUTPUT.PUT_LINE('Employee ID : ' || p_emid);
+    DBMS_OUTPUT.PUT_LINE('Employee Phone : ' || v_phone);
+    DBMS_OUTPUT.PUT_LINE('Employee Name : ' || v_name);
+    DBMS_OUTPUT.PUT_LINE('Employee Position : ' || v_pos);
+    DBMS_OUTPUT.PUT_LINE('Employee Salary : ' || v_salary);
+END;
+
+begin
+employee_queuer(11106);
+end;
+
+begin
+employee_queuer(11102);
+end;
+
+--2
+CREATE OR REPLACE PROCEDURE station_queuer(p_stid station.station_id%TYPE)
+AS
+    v_name         station.station_name%TYPE;
+    v_location     station.station_location%TYPE;
+    
+BEGIN
+    SELECT station_name,station_location
+        INTO v_name,v_location
+        FROM station WHERE station_id=p_stid;
+    DBMS_OUTPUT.PUT_LINE('**OUR STATION IN TRAIN STATION**');
+    DBMS_OUTPUT.PUT_LINE('Station ID : ' || p_stid);
+    DBMS_OUTPUT.PUT_LINE('Station Name : ' || v_name);
+    DBMS_OUTPUT.PUT_LINE('Station Location : ' || v_location);
+END;   
+
+begin
+station_queuer(11);
+end;
+
+begin
+station_queuer(55);
+end;
+
+-----------------------------------------------------------------------------------------------
+--update
+--1
+CREATE OR REPLACE PROCEDURE update_position(p_employee in employee.employee_id%type,
+p_empjob in employee.employee_position%type,p_empsal in employee.employee_salary%type)
+AS
+BEGIN
+    update employee set employee_position=p_empjob,
+    employee_salary=p_empsal
+    where employee_id=p_employee;
+END update_position;
+
+begin
+update_position(11108,'Director of International Stations',11000);
+end;
+
+--2
+CREATE OR REPLACE PROCEDURE update_phone(p_passenger in passenger.passenger_id%type,
+p_passphone in passenger.passenger_phone%type)
+AS 
+BEGIN
+    update passenger set passenger_phone=p_passphone
+    where passenger_id=p_passenger;
+END update_phone;
+
+begin
+update_phone(2110618,0566690607);
+end;
+
